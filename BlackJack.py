@@ -3,6 +3,11 @@
 
 import random as r #use for generating card values
 
+# Create a class of Player with Name and Hand
+def Class Player(Object):
+	def __init__(self, Name, Hand):
+		Player.Name = Name
+		Player.Hand = []
 
 # User input for number of players
 try: # Need to learn how to add a loop on exception errors to request num 
@@ -23,14 +28,16 @@ elif Player_Num > 6:
 	print "Too many players! Max 6 players."
 	quit()
 
+
 	
+	
+	
+
 # Assign player names
 Player_Names = []
 for player in range(Player_Num):
-	Player_Names.append(raw_input("Enter player names = "))
-
-#print "Player Names = " + ", ".join(Player_Names) # Print just for testing
-
+	Player_Names.append(raw_input("Enter player names = "))	
+	
 # This is the deck, use index value for card number, Boolean for status of card in deck.	
 Suit = {1:'H',2:'D',3:'S',4:'C'} 
 Deck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
@@ -55,14 +62,12 @@ Drawn = 0
 while Drawn < 52:
 	for i in range(0,Player_Num):
 		Card = draw_card()
-		#Player_Names[i].insert(Card)
-		#Drawn -= 1 # Don't increase Drawn if card was already drawn
 		Drawn += 1 # Count number of cards drawn
 		print str(Suit[Card[0]]) + str(Card[1]), Drawn
-		#Player_Names[i] = Player_Names[i].append(str(Card))
 		
 print Player_Names
 print Deck[0]
 print Deck[1]
 print Deck[2]
 print Deck[3]
+
