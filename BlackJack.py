@@ -29,27 +29,43 @@ Player_Names = []
 for player in range(Player_Num):
 	Player_Names.append(raw_input("Enter player names = "))
 
-print Player_Names # Print just for testing
+print "Player Names = " + ", ".join(Player_Names) # Print just for testing
 
-def draw_card():
-	Suit = {1:'H',2:'D',3:'S',4:'C'} 
-	Card_Suit = r.randint(1,4) # Generate card suit
-	Card_Num = r.randint(1,13) # Generate card number
-	Card = str(Suit[Card_Suit]) + str(Card_Num)
-	return(Card)
-
-# This is the deck, use index value for card number, Boolean for status of card in deck.
-
+# This is the deck, use index value for card number, Boolean for status of card in deck.	
+Suit = {1:'H',2:'D',3:'S',4:'C'} 
 Deck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True]]
-		
+
+def draw_card():
+	Card_Suit = r.randint(1,4) # Generate card suit
+	Card_Num = r.randint(1,13) # Generate card number
+	#Card = str(Suit[Card_Suit]) + str(Card_Num)
+	return [Card_Suit, Card_Num]
+
+	
 
 #print Deck[Card_Suit-1][Card_Num-1] # Print just for testing
-
-
-
+# Card = draw_card()
+# if Deck[Card[0]][Card[1]] == True:
+	# Deck[Card[0]][Card[1]] = False
+# elif Deck[Card[0]][Card[1]] == False:
+	# Card = draw_card()
 #print Card_Suit, Card_Num # Print just for testing
-print draw_card()
 # Hand cards out for players
+Drawn = 0
+
+while Drawn < 52:
+	Card = draw_card()
+	if Deck[Card[0]-1][Card[1]-1] == True:
+		Deck[Card[0]-1][Card[1]-1] = False
+	elif Deck[Card[0]-1][Card[1]-1] == False:
+		Card = draw_card()
+		Drawn -= 1 # Don't increase Drawn if card was already drawn
+	Drawn += 1 # Count number of cards drawn
+	print str(Suit[Card[0]]) + str(Card[1]), Drawn
+	print Deck
+	
+	
+	
