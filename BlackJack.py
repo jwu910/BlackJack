@@ -80,9 +80,8 @@ def draw_card(): # this function should draw card and return only card that was 
 	return [Card_Suit, Card_Num, card_val]
 
 
-# Hand cards out for players
-Drawn = 0
-cont = False
+
+
 def print_current():
 	os.system('cls')
 	print "Current Players = "
@@ -92,9 +91,13 @@ def print_current():
 	print "---------------------------------------------"
 	print "Total Cards on Table = ", Drawn
 
+	
+# Hand cards out for players
+Drawn = 0
 while Drawn < 52:
 	print_current()
-	#for i in #######################
+	for i in range(len(Players),0,-1): # Check if there is a winner.
+		if max(Players) >
 	for i in range(0,len(Players)):
 		try:
 			if sum(Players[i].hand) > 21:
@@ -104,7 +107,7 @@ while Drawn < 52:
 				# Players.pop(i)
 				p.status = "Folded!"
 				print i
-		except IndexError:
+		except IndexError:```````````````````````````````
 			print i
 			print Players
 			pass
@@ -117,8 +120,6 @@ while Drawn < 52:
 		print 52-Drawn, " Cards left"
 		quit()
 	else:
-		
-		
 		for i in range(0,len(Players)):
 			p = Players[i]
 			if p.status == "Playing":
