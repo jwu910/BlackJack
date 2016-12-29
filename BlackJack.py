@@ -144,3 +144,4 @@ while Drawn < 52:
 			elif p.status == "Folded!":
 				next
 
+
