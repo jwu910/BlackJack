@@ -70,7 +70,6 @@ def draw_card(): # this function should draw card and return only card that was 
 		Card_Num = r.randint(1,13) # Generate card number
 	if Deck[Card_Suit-1][Card_Num-1] == True:
 		Deck[Card_Suit-1][Card_Num-1] = False
-	#Card = str(Suit[Card_Suit]) + str(Card_Num)
 	if Card_Num == 0:
 		card_val = 11
 	elif Card_Num > 0 and Card_Num < 10:
@@ -80,8 +79,7 @@ def draw_card(): # this function should draw card and return only card that was 
 	return [Card_Suit, Card_Num, card_val]
 
 
-
-
+# Keeps list of current players and their hands on top of console
 def print_current():
 	os.system('cls')
 	print "Current Players = "
@@ -96,9 +94,16 @@ def print_current():
 Drawn = 0
 while Drawn < 52:
 	print_current()
-	for i in range(len(Players),0,-1): # Check if there is a winner.
-		if max(Players) >
+	#for i in range(len(Players),0,-1): # Check if there is a winner.
+	
 	for i in range(0,len(Players)):
+		if sum(Players[len(Players)-1].hand) > 21:
+			print sum(Players[len(Players)-1].hand)
+			print "Dealer Busted! Players win!"
+			print "Next Round!, Play Again?"
+			quit()
+			
+			
 		try:
 			if sum(Players[i].hand) > 21:
 				p = Players[i]
@@ -107,10 +112,10 @@ while Drawn < 52:
 				# Players.pop(i)
 				p.status = "Folded!"
 				print i
-		except IndexError:```````````````````````````````
+		except IndexError:
 			print i
 			print Players
-			pass
+			
 	if Drawn >= 52:
 			for i in range(0,len(Players)):
 				print p.name, p.hand, "Hand total = ", sum(Players[i].hand)
@@ -144,5 +149,5 @@ while Drawn < 52:
 					continue
 			elif p.status == "Folded!":
 				next
-
+	
 
