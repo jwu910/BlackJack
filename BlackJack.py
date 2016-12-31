@@ -9,9 +9,11 @@ class Player(object):
 	def __init__(self, name):
 		self.name = name
 		self.hand = []
+		self.card_faces = []
 		
-	def add_card(self, card):
+	def add_card(self, card, cardface):
 		self.hand.append(card)
+		self.card_faces.append(cardface)
 		
 	def status(self, status):
 		self.status = status
@@ -88,7 +90,7 @@ def print_current():
 			continue
 		else:
 			print Players[i].name, "is", Players[i].status
-			print Players[i].hand, sum(Players[i].hand)
+			print Players[i].card_faces, sum(Players[i].hand)
 	print "---------------------------------------------"
 	print "Total Cards on Table = ", Drawn
 	print "---------------------------------------------"
@@ -96,37 +98,50 @@ def print_current():
 	
 # Hand cards out for players
 Drawn = 0
+valid_answers = ['H','S']
 
 while sum(Players[len(Players)-1].hand) < 21:
 	for i in range(0,len(Players)): # Cycle through all players
 		p = Players[i]
 		index = 0
-		# Check if player is still playing
-		
-		############################################# WORKING #########################################
-		if all(Players[i].status == "busted!" for Player in Players):
-			print "Dealer wins!!!!!!!!!"
-			quit()
-		
-		# need to add winning conditions for dealer as well as winning conditions for players.
-		
 		
 		if p.status == "Playing" and sum(p.hand) < 21:
 			print_current()
 			print "Current Player is", p.name
-			hit = raw_input("Hit or Stay? H/S = ")
-			if hit == "H" or hit == "h":
+			
+			# Check dealer winning conditions every turn
+			if all(Players[i].status == "busted!" for Player in Players):
+				print_current()
+				print "Dealer wins!!!!!!!!!"
+				quit()
+			if sum(Players[i].hand) for i in len(Players)-1 > 21:
+				print_current()
+				print "sum line is testing"
+			# Player input to hit or stay - while loop checks to make sure answer is valid
+			while True:
+				hit = raw_input("Hit or Stay? H/S = ")
+				if any(answer.upper() == hit.upper() for answer in valid_answers): break
+				print_current()
+				print 'Invalid command. Please use "H" to hit or "S" to stay.'
+
+			if hit.upper() == "H":
 				Card = draw_card()
-				p.add_card(Card[2])
-			elif hit == "S" or hit == "s":
+				cardface = str(Suit[Card[0]]) + str(Card[1])
+				p.add_card(Card[2],cardface)
+				if sum(p.hand) > 21:
+					p.status = "busted!"
 				continue
-		if sum(p.hand) > 21:
-			p.status = "busted!"
-			continue
+				
+
+			elif hit.upper() == "S":
+				p.status = "folded!"
+				continue
+
 if sum(Players[len(Players)-1].hand) > 21:
-	print_current()
+
 	print "Dealer has busted!"
 	print "Remaining payers win!"
+if sum(Players[i].hand) for i in len(Players)-1 > 21:
 	
 	
 	
@@ -151,65 +166,3 @@ if sum(Players[len(Players)-1].hand) > 21:
 
 
 					   
-					   
-					   
-#while Drawn < 52:
-#	print_current()
-#	
-#	for i in range(0,len(Players)):
-#		if sum(Players[len(Players)-1].hand) > 21:
-#			print sum(Players[len(Players)-1].hand)
-#			print "Dealer Busted! Players win!"
-#			print "Next Round!, Play Again?"
-#			quit()
-#		elif sum(Players[i-1].hand) > 21:
-#			Players[i-1].status = "Busted!"
-#			next
-#		try:
-#			if sum(Players[i-1].hand) > 21:
-#				p = Players[i-1]
-#				print p.name, "'s hand is over 21! Bust!!"
-#				Players.pop(i-1)
-#				p.status = "Busted!"
-#
-#		except IndexError:
-#			print i
-#			print Players
-#			
-#	if Drawn >= 52:
-#			for i in range(0,len(Players)):
-#				print p.name, p.hand, "Hand total = ", sum(Players[i].hand)
-#				quit()
-#	
-#	elif 52 - Drawn < len(Players):
-#		print "Not enough cards."
-#		print 52-Drawn, " Cards left"
-#		quit()
-#	
-#	else:
-#		for i in range(0,len(Players)):
-#			p = Players[i]
-#			if p.status == "Playing":
-#			# Add sum(p.hand) and see if player would like to hit or stay
-#				print "Current Player: ", p.name
-#				print "Hand total: ", sum(p.hand)
-#				if p.name == "Dealer":
-#					hit = "H"
-#				else:
-#					hit = raw_input("Hit or Stay? H/S = ")
-#				if hit == "H":
-#					Card = draw_card()
-#					cardface = str(Suit[Card[0]]) + str(Card[1])
-#					p.add_card(Card[2]) # Need to add card as card value
-#					Drawn += 1 # Count number of cards drawn
-#					print_current()
-#					print "Player: ", p.name, "Card Drawn: ", cardface
-#					print "Hand total: ", sum(p.hand)# Print cards dealt this round
-#					print "---------------------------------------------"
-#				elif hit == "S":
-#					continue
-#			elif p.status == "Folded!":
-#				next
-#	
-#
-#
