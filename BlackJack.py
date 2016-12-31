@@ -52,7 +52,7 @@ for i in range(len(Players)):
 for i in range(len(Players)):
 	Players[i].status = "Playing"
 	
-
+	
 	
 # This is the deck, use index value for card number, Boolean for status of card in deck.
 Suit = {1:'H',2:'D',3:'S',4:'C'} 
@@ -84,8 +84,11 @@ def print_current():
 	os.system('clear')
 	print "Current Players = "
 	for i in range(len(Players)):
-		print Players[i].name, "is", Players[i].status
-		print Players[i].hand, sum(Players[i].hand)
+		if sum(p.hand) > 21:
+			continue
+		else:
+			print Players[i].name, "is", Players[i].status
+			print Players[i].hand, sum(Players[i].hand)
 	print "---------------------------------------------"
 	print "Total Cards on Table = ", Drawn
 	print "---------------------------------------------"
@@ -93,24 +96,49 @@ def print_current():
 	
 # Hand cards out for players
 Drawn = 0
-for i in range(0,len(Players)):
-	p = Players[i]
-	while p.status == "Playing":
-		if sum(p.hand) < 21:
+
+while sum(Players[len(Players)-1].hand) < 21:
+	for i in range(0,len(Players)): # Cycle through all players
+		p = Players[i]
+		index = 0
+		# Check if player is still playing
+		if p.status == "Playing" and sum(p.hand) < 21:
 			print_current()
 			print "Current Player is", p.name
 			hit = raw_input("Hit or Stay? H/S = ")
 			if hit == "H" or hit == "h":
 				Card = draw_card()
 				p.add_card(Card[2])
-				Drawn += 1
-				print "next"
-				
+			elif hit == "S" or hit == "s":
+				continue
+		if sum(p.hand) > 21:
+			p.status = "busted!"
 			continue
-		else:
-			print p.name, "has busted!"
-			p.status = "Folded!"
-		continue	
+if sum(Players[len(Players)-1].hand) > 21:
+	print_current()
+	print "Dealer has busted!"
+	print "Remaining payers win!"
+	
+	
+	
+	
+	
+#	while p.status == "Playing" and index == i:
+#		if sum(p.hand) < 21:
+#			print_current()
+#			print "Current Player is", p.name
+#			hit = raw_input("Hit or Stay? H/S = ")
+#			if hit == "H" or hit == "h":
+#				Card = draw_card()
+#				p.add_card(Card[2])
+#				Drawn += 1
+#				print "next"
+#			continue
+#		else:
+#			print p.name, "has busted!"
+#			p.status = "Folded!"
+#	index += 1
+#	continue	
 
 
 					   
