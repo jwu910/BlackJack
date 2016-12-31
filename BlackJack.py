@@ -19,31 +19,32 @@ class Player(object):
 		self.status = status
 	# def fold(self, p):
 		# self.hand.pop(p)
+Player_Num = 1
 		
 # User input for number of players
-try: # Need to learn how to add a loop on exception errors to request num 
-	 # of players again instead of quit
-	Player_Num = input("Number of Players = ") #Max 6 Players
-except NameError:
-	print "Invalid data type, must be number 1-6."
-	quit()
-except SyntaxError:
-	print "Invalid data! Must enter number of players!"
-	quit()
+#try: # Need to learn how to add a loop on exception errors to request num 
+#	 # of players again instead of quit
+#	Player_Num = input("Number of Players = ") #Max 6 Players
+#except NameError:
+#	print "Invalid data type, must be number 1-6."
+#	quit()
+#except SyntaxError:
+#	print "Invalid data! Must enter number of players!"
+#	quit()
 
 # Check if number of players is valid	
-if Player_Num < 1:
-	print "Need at least 1 player!"
-	quit()
-elif Player_Num+1 > 7:
-	print "Too many players! Max 6 players."
-	quit()
+#if Player_Num < 1:
+#	print "Need at least 1 player!"
+#	quit()
+#elif Player_Num+1 > 7:
+#	print "Too many players! Max 6 players."
+#	quit()
 
 
 # Assign player names - create player objects
 Players = []
 for i in range(0,Player_Num):
-	Players.append(raw_input("Enter player names = "))
+	Players.append(raw_input("Enter player name = "))
 Players.append("Dealer")
 	
 # Assign class name per player	
@@ -53,8 +54,6 @@ for i in range(len(Players)):
 	
 for i in range(len(Players)):
 	Players[i].status = "Playing"
-	
-	
 	
 # This is the deck, use index value for card number, Boolean for status of card in deck.
 Suit = {1:'H',2:'D',3:'S',4:'C'} 
@@ -72,7 +71,7 @@ def draw_card(): # this function should draw card and return only card that was 
 		Card_Num = r.randint(1,13) # Generate card number
 	if Deck[Card_Suit-1][Card_Num-1] == True:
 		Deck[Card_Suit-1][Card_Num-1] = False
-	if Card_Num == 0:
+	if Card_Num == 0: # Need or statement options for ace == 1 or ace == 11.
 		card_val = 11
 	elif Card_Num > 0 and Card_Num < 10:
 		card_val = Card_Num + 1
@@ -81,20 +80,20 @@ def draw_card(): # this function should draw card and return only card that was 
 	return [Card_Suit, Card_Num, card_val]
 
 
-# Keeps list of current players and their hands on top of console
+# Keeps list of current players and their hands on top of terminal
 def print_current():
 	os.system('clear')
 	print "Current Players = "
 	for i in range(len(Players)):
-		if sum(p.hand) > 21:
-			continue
-		else:
-			print Players[i].name, "is", Players[i].status
-			print Players[i].card_faces, sum(Players[i].hand)
+		#if sum(p.hand) > 21:
+		#	continue
+		#else:
+		print Players[i].name, "is", Players[i].status
+		print Players[i].card_faces, sum(Players[i].hand)
 	print "---------------------------------------------"
 	print "Total Cards on Table = ", Drawn
 	print "---------------------------------------------"
-	
+
 	
 # Hand cards out for players
 Drawn = 0
@@ -110,14 +109,20 @@ while sum(Players[len(Players)-1].hand) < 21:
 			print "Current Player is", p.name
 			
 			# Check dealer winning conditions every turn
-			if all(Players[i].status == "busted!" for Player in Players):
-				print_current()
-				print "Dealer wins!!!!!!!!!"
-				quit()
-			if sum(Players[i].hand) for i in len(Players)-1 > 21:
-				print_current()
-				print "sum line is testing"
+			#if all(Players[i].status == "busted!" for Player in Players):
+			#	print_current()
+			#	print "Dealer wins!!!!!!!!!"
+			#	quit()
+			#if sum(Players[i].hand) for i in len(Players)-1 > 21:
+			#	print_current()
+			#	print "sum line is testing"
 			# Player input to hit or stay - while loop checks to make sure answer is valid
+			if sum(Players[0].hand) > 21:
+				Players[0].status = "busted!"
+				print_current()
+				print "You Lose! Dealer wins!"
+				quit()
+			
 			while True:
 				hit = raw_input("Hit or Stay? H/S = ")
 				if any(answer.upper() == hit.upper() for answer in valid_answers): break
@@ -134,35 +139,11 @@ while sum(Players[len(Players)-1].hand) < 21:
 				
 
 			elif hit.upper() == "S":
-				p.status = "folded!"
+				p.status = "standing."
 				continue
 
 if sum(Players[len(Players)-1].hand) > 21:
-
+	print_current()
 	print "Dealer has busted!"
 	print "Remaining payers win!"
-if sum(Players[i].hand) for i in len(Players)-1 > 21:
-	
-	
-	
-	
-	
-#	while p.status == "Playing" and index == i:
-#		if sum(p.hand) < 21:
-#			print_current()
-#			print "Current Player is", p.name
-#			hit = raw_input("Hit or Stay? H/S = ")
-#			if hit == "H" or hit == "h":
-#				Card = draw_card()
-#				p.add_card(Card[2])
-#				Drawn += 1
-#				print "next"
-#			continue
-#		else:
-#			print p.name, "has busted!"
-#			p.status = "Folded!"
-#	index += 1
-#	continue	
-
-
-					   
+			   
