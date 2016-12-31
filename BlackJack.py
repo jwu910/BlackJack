@@ -102,6 +102,15 @@ while sum(Players[len(Players)-1].hand) < 21:
 		p = Players[i]
 		index = 0
 		# Check if player is still playing
+		
+		############################################# WORKING #########################################
+		if all(Players[i].status == "busted!" for Player in Players):
+			print "Dealer wins!!!!!!!!!"
+			quit()
+		
+		# need to add winning conditions for dealer as well as winning conditions for players.
+		
+		
 		if p.status == "Playing" and sum(p.hand) < 21:
 			print_current()
 			print "Current Player is", p.name
