@@ -99,17 +99,23 @@ def print_current():
 		print "Total Cards on Table = ", Drawn
 		print "---------------------------------------------"
 
-	
 # Hand cards out for players
 Drawn = 0
 valid_answers = ['H','S']
+
+for i in range (0,2):
+	for i in range(0, len(Players)):
+		p =	Players[i]
+		Card = draw_card()
+		cardface = str(Suit[Card[0]]) + str(Card[1])
+		p.add_card(Card[2],cardface)
 
 while sum(Players[len(Players)-1].hand) < 21:
 	for i in range(0,len(Players)): # Cycle through all players
 		p = Players[i]
 		index = 0
 		
-		if p.status == "Playing" and sum(p.hand) < 21:
+		while p.status == "Playing" and sum(p.hand) < 21:
 			print_current()
 			print "Current Player is", p.name
 			
@@ -122,31 +128,38 @@ while sum(Players[len(Players)-1].hand) < 21:
 			#	print_current()
 			#	print "sum line is testing"
 			# Player input to hit or stay - while loop checks to make sure answer is valid
-			if sum(Players[0].hand) > 21:
-				Players[0].status = "busted!"
+			if sum(Players[index].hand) > 21:
+				Players[index].status = "busted!"
 				print_current()
 				print "You Lose! Dealer wins!"
 				quit()
 			
-			while True:
-				hit = raw_input("Hit or Stay? H/S = ")
-				if any(answer.upper() == hit.upper() for answer in valid_answers): break
-				print_current()
-				print 'Invalid command. Please use "H" to hit or "S" to stay.'
-
-			if hit.upper() == "H":
-				Card = draw_card()
-				cardface = str(Suit[Card[0]]) + str(Card[1])
-				p.add_card(Card[2],cardface)
-				if sum(p.hand) > 21:
-					p.status = "busted!"
-				continue
-				
-
-			elif hit.upper() == "S":
-				p.status = "standing."
-				continue
-
+			# Check if Dealer's turn, then perform dealer's rules
+			if Players[index].name != "Dealer":
+				while True:
+					hit = raw_input("Hit or Stay? H/S = ")
+					if any(answer.upper() == hit.upper() for answer in valid_answers): break
+					print_current()
+					print 'Invalid command. Please use "H" to hit or "S" to stay.'
+				if hit.upper() == "H":
+					Card = draw_card()
+					cardface = str(Suit[Card[0]]) + str(Card[1])
+					p.add_card(Card[2],cardface)
+					if sum(p.hand) > 21:
+						p.status = "busted!"
+					continue
+				elif hit.upper() == "S":
+					p.status = "standing."
+					continue
+			else:
+				if sum(Players[index].hand) < 17:
+					hit = "H"
+				elif sum(Players[index]) >= 17:
+					hit = "S"
+					
+			# Draw cards		
+			
+	
 if sum(Players[len(Players)-1].hand) > 21:
 	print_current()
 	print "Dealer has busted!"
