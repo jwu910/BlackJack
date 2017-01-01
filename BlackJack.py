@@ -82,17 +82,22 @@ def draw_card(): # this function should draw card and return only card that was 
 
 # Keeps list of current players and their hands on top of terminal
 def print_current():
-	os.system('clear')
-	print "Current Players = "
-	for i in range(len(Players)):
-		#if sum(p.hand) > 21:
-		#	continue
-		#else:
-		print Players[i].name, "is", Players[i].status
-		print Players[i].card_faces, sum(Players[i].hand)
-	print "---------------------------------------------"
-	print "Total Cards on Table = ", Drawn
-	print "---------------------------------------------"
+	try:
+		os.system('clear')
+		os.system('cls')
+	#except:
+		os.system('cls')
+	finally:
+		print "Current Players = "
+		for i in range(len(Players)):
+			#if sum(p.hand) > 21:
+			#	continue
+			#else:
+			print Players[i].name, "is", Players[i].status
+			print Players[i].card_faces, sum(Players[i].hand)
+		print "---------------------------------------------"
+		print "Total Cards on Table = ", Drawn
+		print "---------------------------------------------"
 
 	
 # Hand cards out for players
