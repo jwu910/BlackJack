@@ -140,6 +140,7 @@ while sum(Players[len(Players)-1].hand) < 17:
 					continue
 			# Check if Dealer's turn, then perform dealer's rules
 			if Players[index].name != "Dealer":
+				
 				while True:
 					hit = raw_input("Hit or Stay? H/S = ")
 					if any(answer.upper() == hit.upper() for answer in valid_answers): break
@@ -181,7 +182,8 @@ if sum(Players[len(Players)-1].hand) > 21:
 			   
 print_current()
 for i in range(len(Players)):
-	#Not complete --- need to fix winning conditions maybe add minimum draw counter
+	# Error when starting cards are both above 17. Push message is unintentionally called.
+	# Not complete --- need to fix winning conditions maybe add minimum draw counter
 	print Players[i].card_faces, sum(Players[i-1].hand)
 	if Players[i].status != "busted!":
 		if sum(Players[len(Players)-1].hand) < sum(Players[i].hand):
