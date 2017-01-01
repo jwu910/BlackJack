@@ -103,6 +103,7 @@ def print_current():
 Drawn = 0
 valid_answers = ['H','S']
 
+# Draw initial cards for players
 for i in range (0,2):
 	for i in range(0, len(Players)):
 		p =	Players[i]
@@ -110,7 +111,7 @@ for i in range (0,2):
 		cardface = str(Suit[Card[0]]) + str(Card[1])
 		p.add_card(Card[2],cardface)
 
-while sum(Players[len(Players)-1].hand) < 21:
+while sum(Players[len(Players)-1].hand) < 17:
 	for i in range(0,len(Players)): # Cycle through all players
 		p = Players[i]
 		index = 0
@@ -133,7 +134,10 @@ while sum(Players[len(Players)-1].hand) < 21:
 				print_current()
 				print "You Lose! Dealer wins!"
 				quit()
-			
+			if Players[index].name == "Dealer":
+				if sum(Players[index].hand) > 17:
+					Players[index].status = "Standing."
+					continue
 			# Check if Dealer's turn, then perform dealer's rules
 			if Players[index].name != "Dealer":
 				while True:
@@ -156,12 +160,31 @@ while sum(Players[len(Players)-1].hand) < 21:
 					hit = "H"
 				elif sum(Players[index]) >= 17:
 					hit = "S"
+				if hit.upper() == "H":
+					Card = draw_card()
+					cardface = str(Suit[Card[0]]) + str(Card[1])
+					p.add_card(Card[2],cardface)
+					if sum(p.hand) > 21:
+						p.status = "busted!"
+					continue
+				elif hit.upper() == "S":
+					p.status = "standing."
+					break
 					
 			# Draw cards		
 			
-	
+		
 if sum(Players[len(Players)-1].hand) > 21:
 	print_current()
 	print "Dealer has busted!"
 	print "Remaining payers win!"
 			   
+print_current()
+for i in range(len(Players)):
+	#Not complete --- need to fix winning conditions maybe add minimum draw counter
+	print Players[i].card_faces, sum(Players[i-1].hand)
+	if Players[i].status != "busted!":
+		if sum(Players[len(Players)-1].hand) < sum(Players[i].hand):
+			print Players[i].name, "wins!"
+		elif sum(Players[len(Players)-1].hand) < 21:
+			print "Push! Start over."
