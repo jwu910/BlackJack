@@ -24,6 +24,9 @@ class Player(object):
 		
 	def status(self, status):
 		self.status = status
+		
+	def has_ace(self, has_ace):
+		self.has_ace = has_ace
 
 Player_Num = 2
 		
@@ -51,9 +54,7 @@ Player_Num = 2
 Players = []
 #for i in range(0,Player_Num):
 Players.append(raw_input("Enter player name = "))
-print Players
 Players.append("Dealer")
-print Players
 	
 # Assign class name per player	
 for i in range(0,len(Players)):
@@ -129,15 +130,22 @@ for player in Players:
 			cardface = "***"
 			hidden = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
+			if Card[1] == 0:
+				p.has_ace(True)
+				print p.has_ace
 		else:
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
+			if Card[1] == 0:
+				p.has_ace(True) 
 		Drawn += 1
 		
 		
-		
-		
+for i in Players:
+	if p.has_ace == True:
+		print p.has_ace
+		time.sleep(3)
 # -----------------------------Deal---------------------------------------
 print_current()
 #
@@ -151,6 +159,10 @@ for i in range(0,len(Players)):
 				Card = draw_card()
 				cardface = str(Suit[Card[0]]) + str(Card[1])
 				p.add_card(Card[2],cardface)
+				if Card[1] == 0:
+					p.has_ace(True) 
+					#has_ace = True # Check if player has Ace. add notation to player class
+					#p.has_ace(True)
 				Drawn += 1
 				print_current()
 			elif hit == "S":
