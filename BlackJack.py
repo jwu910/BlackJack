@@ -19,7 +19,7 @@ class Player(object):
 	def status(self, status):
 		self.status = status
 
-Player_Num = 1
+Player_Num = 2
 		
 # User input for number of players
 #try: # Need to learn how to add a loop on exception errors to request num 
@@ -43,14 +43,16 @@ Player_Num = 1
 
 # Assign player names - create player objects
 Players = []
-for i in range(0,Player_Num):
-	Players.append(raw_input("Enter player name = "))
+#for i in range(0,Player_Num):
+Players.append(raw_input("Enter player name = "))
+print Players
 Players.append("Dealer")
+print Players
 	
 # Assign class name per player	
-for i in range(len(Players)):
+for i in range(0,len(Players)):
 	Players[i] = Player(Players[i])
-	print Players[i].name
+
 	
 for i in range(len(Players)):
 	Players[i].status = "Playing"
@@ -88,12 +90,13 @@ def print_current():
 		os.system('cls')
 	finally:
 		print "Current Players = "
-		for i in range(len(Players)):
+		for i in range(0,len(Players)):
+			p = Players[i]
 			#if sum(p.hand) > 21:
 			#	continue
 			#else:
-			print Players[i].name, "is", Players[i].status
-			print Players[i].card_faces, sum(Players[i].hand)
+			print p.name, "is", p.status
+			print p.card_faces, sum(p.hand)
 		print "---------------------------------------------"
 		print "Total Cards on Table = ", Drawn
 		print "---------------------------------------------"
@@ -102,9 +105,10 @@ def print_current():
 Drawn = 0
 valid_answers = ['H','S']
 
+
 # Draw initial 2 cards for players
-for i in range (0,2):
-	for i in range(0, len(Players)):
+for player in Players:
+	for i in range(len(Players)):
 		p =	Players[i]
 		if p.name == "Dealer" and len(p.hand) > 0:
 			Card = draw_card()
@@ -114,7 +118,37 @@ for i in range (0,2):
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-
+		Drawn += 1
+		
+		
+		
 		
 # -----------------------------Deal---------------------------------------
 print_current()
+for i in range(0,len(Players)):
+	p = Players[i]
+	while p.name != "Dealer":
+		print_current()
+		print 'Current player is =',p.name
+	
+		hit = raw_input("Hit or Stay? H/S =")
+		if hit.upper == "H":
+			Card = draw_card()
+			cardface = str(Suit[Card[0]]) + str(Card[1])
+			p.add_card(Card[2],cardface)
+			Drawn += 1
+			print_current()
+			if sum(p.hand) > 21:
+				p.status = "busted!"
+				print_current()
+				continue
+				break
+			print_current()
+		elif hit.upper == "S":
+			p.status = "standing."
+			print_current()
+			break
+		
+	if sum(p.hand) > 21:
+		p.status = "busted!"
+	
