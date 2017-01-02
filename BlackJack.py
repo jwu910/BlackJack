@@ -92,9 +92,6 @@ def print_current():
 		print "Current Players = "
 		for i in range(0,len(Players)):
 			p = Players[i]
-			#if sum(p.hand) > 21:
-			#	continue
-			#else:
 			print p.name, "is", p.status
 			print p.card_faces, sum(p.hand)
 		print "---------------------------------------------"
@@ -127,28 +124,30 @@ for player in Players:
 print_current()
 for i in range(0,len(Players)):
 	p = Players[i]
-	while p.name != "Dealer":
+	while p.name != "Dealer" and p.status == "Playing":
 		print_current()
 		print 'Current player is =',p.name
-	
-		hit = raw_input("Hit or Stay? H/S =")
-		if hit.upper == "H":
-			Card = draw_card()
-			cardface = str(Suit[Card[0]]) + str(Card[1])
-			p.add_card(Card[2],cardface)
-			Drawn += 1
-			print_current()
-			if sum(p.hand) > 21:
-				p.status = "busted!"
-				print_current()
-				continue
-				break
-			print_current()
-		elif hit.upper == "S":
-			p.status = "standing."
-			print_current()
-			break
-		
+		while True:
+			hit = raw_input("Hit or Stay? H/S = ")
+			if hit.upper == answer.upper() in valid_answers:
+				if hit.upper == "H":
+					Card = draw_card()
+					cardface = str(Suit[Card[0]]) + str(Card[1])
+					p.add_card(Card[2],cardface)
+					Drawn += 1
+					print_current()
+					if sum(p.hand) > 21:
+						p.status = "busted!"
+						print_current()
+						continue
+						break
+					print_current()
+				elif hit.upper == "S":
+					p.status = "standing."
+					print_current()
+					break
+				else:
+					print "this is where we're stuck"
 	if sum(p.hand) > 21:
 		p.status = "busted!"
 	
