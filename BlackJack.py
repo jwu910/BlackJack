@@ -3,6 +3,7 @@
 
 import random as r # use for generating card values
 import os # to clear screen
+
 # Create a class of Player with Name and Hand
 class Player(object):
 
@@ -17,8 +18,7 @@ class Player(object):
 		
 	def status(self, status):
 		self.status = status
-	# def fold(self, p):
-		# self.hand.pop(p)
+
 Player_Num = 1
 		
 # User input for number of players
@@ -84,7 +84,6 @@ def draw_card(): # this function should draw card and return only card that was 
 def print_current():
 	try:
 		os.system('clear')
-		os.system('cls')
 	#except:
 		os.system('cls')
 	finally:
@@ -99,94 +98,23 @@ def print_current():
 		print "Total Cards on Table = ", Drawn
 		print "---------------------------------------------"
 
-# Hand cards out for players
+
 Drawn = 0
 valid_answers = ['H','S']
 
-# Draw initial cards for players
+# Draw initial 2 cards for players
 for i in range (0,2):
 	for i in range(0, len(Players)):
 		p =	Players[i]
-		Card = draw_card()
-		cardface = str(Suit[Card[0]]) + str(Card[1])
-		p.add_card(Card[2],cardface)
+		if p.name == "Dealer" and len(p.hand) > 0:
+			Card = draw_card()
+			cardface = "***"
+			p.add_card(Card[2],cardface)
+		else:
+			Card = draw_card()
+			cardface = str(Suit[Card[0]]) + str(Card[1])
+			p.add_card(Card[2],cardface)
 
-while sum(Players[len(Players)-1].hand) < 17:
-	for i in range(0,len(Players)): # Cycle through all players
-		p = Players[i]
-		index = 0
 		
-		while p.status == "Playing" and sum(p.hand) < 21:
-			print_current()
-			print "Current Player is", p.name
-			
-			# Check dealer winning conditions every turn
-			#if all(Players[i].status == "busted!" for Player in Players):
-			#	print_current()
-			#	print "Dealer wins!!!!!!!!!"
-			#	quit()
-			#if sum(Players[i].hand) for i in len(Players)-1 > 21:
-			#	print_current()
-			#	print "sum line is testing"
-			# Player input to hit or stay - while loop checks to make sure answer is valid
-			if sum(Players[index].hand) > 21:
-				Players[index].status = "busted!"
-				print_current()
-				print "You Lose! Dealer wins!"
-				quit()
-			if Players[index].name == "Dealer":
-				if sum(Players[index].hand) > 17:
-					Players[index].status = "Standing."
-					continue
-			# Check if Dealer's turn, then perform dealer's rules
-			if Players[index].name != "Dealer":
-				
-				while True:
-					hit = raw_input("Hit or Stay? H/S = ")
-					if any(answer.upper() == hit.upper() for answer in valid_answers): break
-					print_current()
-					print 'Invalid command. Please use "H" to hit or "S" to stay.'
-				if hit.upper() == "H":
-					Card = draw_card()
-					cardface = str(Suit[Card[0]]) + str(Card[1])
-					p.add_card(Card[2],cardface)
-					if sum(p.hand) > 21:
-						p.status = "busted!"
-					continue
-				elif hit.upper() == "S":
-					p.status = "standing."
-					continue
-			else:
-				if sum(Players[index].hand) < 17:
-					hit = "H"
-				elif sum(Players[index]) >= 17:
-					hit = "S"
-				if hit.upper() == "H":
-					Card = draw_card()
-					cardface = str(Suit[Card[0]]) + str(Card[1])
-					p.add_card(Card[2],cardface)
-					if sum(p.hand) > 21:
-						p.status = "busted!"
-					continue
-				elif hit.upper() == "S":
-					p.status = "standing."
-					break
-					
-			# Draw cards		
-			
-		
-if sum(Players[len(Players)-1].hand) > 21:
-	print_current()
-	print "Dealer has busted!"
-	print "Remaining payers win!"
-			   
+# -----------------------------Deal---------------------------------------
 print_current()
-for i in range(len(Players)):
-	# Error when starting cards are both above 17. Push message is unintentionally called.
-	# Not complete --- need to fix winning conditions maybe add minimum draw counter
-	print Players[i].card_faces, sum(Players[i-1].hand)
-	if Players[i].status != "busted!":
-		if sum(Players[len(Players)-1].hand) < sum(Players[i].hand):
-			print Players[i].name, "wins!"
-		elif sum(Players[len(Players)-1].hand) < 21:
-			print "Push! Start over."
