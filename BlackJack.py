@@ -4,6 +4,12 @@
 import random as r # use for generating card values
 import os , time # OS to clear screen, time to pause
 
+# Built in python library for GUI development https://www.tutorialspoint.com/python/python_gui_programming.htm
+# tink = Tkinter.Tk() 
+# import Tkinter 
+# tink.mainloop()	
+
+
 # Create a class of Player with Name and Hand
 class Player(object):
 
@@ -206,4 +212,3 @@ for i in Players[::]:
 		print "Draw! Push!"
 	index += 1
 
-		
