@@ -202,5 +202,8 @@ for i in Players[::]:
 	p = Players[index]
 	if sum(p.hand) == max(results):
 		print p.name, "wins!"
+	if len(set(results)) == 1:
+		print "Draw! Push!"
 	index += 1
+
 		
