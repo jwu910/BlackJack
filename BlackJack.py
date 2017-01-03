@@ -28,6 +28,7 @@ class Player(object):
 	def has_ace(self, has_ace):
 		self.has_ace = has_ace
 
+		
 Player_Num = 2
 		
 # User input for number of players
@@ -63,30 +64,36 @@ for i in range(0,len(Players)):
 	
 for i in range(len(Players)):
 	Players[i].status = "Playing"
-	
+	Players[i].has_ace = "False"
 # This is the deck, use index value for card number, Boolean for status of card in deck.
 
 Drawn = 0
 
 Suit = {1:'H',2:'D',3:'S',4:'C'} 
-Deck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
+DDeck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True]]
+Deck = [[True,True,True],
+		[True,True,True],
+		[True,True,True],
+		[True,True,True]]
+
+
 
 def draw_card(): # this function should draw card and return only card that was not previously drawn.
 	Card_Suit = r.randint(1,4) # Generate card suit
-	Card_Num = r.randint(1,13) # Generate card number
+	Card_Num = r.randint(1,3) # Generate card number
 	card_val = 0
 	while Deck[Card_Suit-1][Card_Num-1] == False:
 		Card_Suit = r.randint(1,4) # Generate card suit
-		Card_Num = r.randint(1,13) # Generate card number
+		Card_Num = r.randint(1,3) # Generate card number
 	if Deck[Card_Suit-1][Card_Num-1] == True:
 		Deck[Card_Suit-1][Card_Num-1] = False
-	if Card_Num == 0: # Need or statement options for ace == 1 or ace == 11.
+	if Card_Num == 1: # Need or statement options for ace == 1 or ace == 11.
 		card_val = 11
-	elif Card_Num > 0 and Card_Num < 10:
-		card_val = Card_Num + 1
+	elif Card_Num > 1 and Card_Num < 10:
+		card_val = Card_Num
 	elif Card_Num > 9:
 		card_val = 10
 	return [Card_Suit, Card_Num, card_val]
@@ -130,22 +137,24 @@ for player in Players:
 			cardface = "***"
 			hidden = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-			if Card[1] == 0:
-				p.has_ace(True)
-				print p.has_ace
+			if int(Card[1]) == 0:
+				p.has_ace = "True"
+
 		else:
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-			if Card[1] == 0:
-				p.has_ace(True) 
+			if int(Card[1]) == 0:
+				p.has_ace = "True"
+
 		Drawn += 1
 		
+print_current()		
+for i in range(len(Players)):
+	print Players[i].has_ace
+	time.sleep(1)
 		
-for i in Players:
-	if p.has_ace == True:
-		print p.has_ace
-		time.sleep(3)
+quit()
 # -----------------------------Deal---------------------------------------
 print_current()
 #
@@ -160,7 +169,7 @@ for i in range(0,len(Players)):
 				cardface = str(Suit[Card[0]]) + str(Card[1])
 				p.add_card(Card[2],cardface)
 				if Card[1] == 0:
-					p.has_ace(True) 
+					p.has_ace = "True" 
 					#has_ace = True # Check if player has Ace. add notation to player class
 					#p.has_ace(True)
 				Drawn += 1
