@@ -26,6 +26,11 @@ class Player(object):
 		self.status = status
 		
 	def has_ace(self, has_ace):
+		'''
+		boolean status to indicate if player is holding an ace.
+		if they have an ace and their hand sum exceeds 21, change the value of the ace from 11 to 1.
+		##Perhaps another way to check is 'if 11 in p.hand:'
+		'''
 		self.has_ace = has_ace
 
 		
@@ -91,7 +96,7 @@ def draw_card(): # this function should draw card and return only card that was 
 	if Deck[Card_Suit-1][Card_Num-1] == True:
 		Deck[Card_Suit-1][Card_Num-1] = False
 	if Card_Num == 1: # Need or statement options for ace == 1 or ace == 11.
-		card_val = 11
+		card_val = 11		
 	elif Card_Num > 1 and Card_Num < 10:
 		card_val = Card_Num
 	elif Card_Num > 9:
@@ -139,7 +144,7 @@ for player in Players:
 			p.add_card(Card[2],cardface)
 			if int(Card[1]) == 0:
 				p.has_ace = "True"
-
+				print "has ace, breaking program"
 		else:
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
@@ -150,11 +155,11 @@ for player in Players:
 		Drawn += 1
 		
 print_current()		
-for i in range(len(Players)):
-	print Players[i].has_ace
-	time.sleep(1)
-		
-quit()
+#for i in range(len(Players)):
+#	print Players[i].has_ace
+#	time.sleep(1)
+#		
+#quit()
 # -----------------------------Deal---------------------------------------
 print_current()
 #
@@ -167,11 +172,22 @@ for i in range(0,len(Players)):
 			if hit == "H":
 				Card = draw_card()
 				cardface = str(Suit[Card[0]]) + str(Card[1])
-				p.add_card(Card[2],cardface)
-				if Card[1] == 0:
-					p.has_ace = "True" 
+				# p.add_card(Card[2],cardface) # Moving this line to end of the draw card to allow for Ace checking before while loop exits
+				print 'quitting right before ace check'
+				print Card[2],Card[1],cardface
+				#quit()
+				if Card[2] == 11: # Checking for ace.
+					if p.has_ace == False:
+						p.has_ace = True
+					if sum(p.hand) + Card[2] > 21:
+						Card[2] = 1
+				else: # Check if player hand already has ace, if so, replace value of 11 with 1 if current card causes hand to exceed 21.
+					if 11 in p.hand:
+						if sum(p.hand) + Card[2] > 21:
+							Card[2] = 1						
 					#has_ace = True # Check if player has Ace. add notation to player class
 					#p.has_ace(True)
+				p.add_card(Card[2],cardface)
 				Drawn += 1
 				print_current()
 			elif hit == "S":
@@ -183,7 +199,7 @@ for i in range(0,len(Players)):
 			p.status = "busted!"
 			print_current()
 			break
-	
+	 	
 	elif p.name == "Dealer": # Perform Dealer actions
 		while sum(p.hand) < 17:
 			hit = "H"
@@ -233,3 +249,4 @@ for i in Players[::]:
 		print "Draw! Push!"
 	index += 1
 
+print Players[0].hand
