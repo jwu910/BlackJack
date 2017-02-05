@@ -100,10 +100,11 @@ def draw_card(): # this function should draw card and return only card that was 
 	if Card_Num == 1:
 		card_val = 11
 		p.has_ace = True
-	elif Card_Num > 1 and Card_Num < 10:
+	elif Card_Num > 1 and Card_Num < 11:
 		card_val = Card_Num
-	elif Card_Num > 9:
+	elif Card_Num > 10:
 		card_val = 10
+
 	return [Card_Suit, Card_Num, card_val]
 
 
@@ -141,9 +142,15 @@ for player in Players:
 		if p.name == "Dealer" and len(p.hand) > 0:
 			Card = draw_card()
 			cardface = "***"
+			if Card[1] == 11:
+				Card[1] = 'J'
+			elif Card[1] == 12:
+				Card[1] = 'Q'
+			elif Card[1] == 13:
+				Card[1] = 'K'
 			hidden = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-			if int(Card[1]) == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
+			if Card[1] == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
 				if p.has_ace == False:
 					p.has_ace = True
 					Card[2] = 11
@@ -151,8 +158,14 @@ for player in Players:
 					Card[2] = 1
 		else:
 			Card = draw_card()
+			if Card[1] == 11:
+				Card[1] = 'J'
+			elif Card[1] == 12:
+				Card[1] = 'Q'
+			elif Card[1] == 13:
+				Card[1] = 'K'
 			cardface = str(Suit[Card[0]]) + str(Card[1])
-			if int(Card[1]) == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
+			if Card[1] == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
 				if p.has_ace == False:
 					p.has_ace = True
 					Card[2] = 11
@@ -171,6 +184,12 @@ for i in range(0,len(Players)):
 			hit = hit_stand()
 			if hit == "H":
 				Card = draw_card()
+				if Card[1] == 11:
+					Card[1] = 'J'
+				elif Card[1] == 12:
+					Card[1] = 'Q'
+				elif Card[1] == 13:
+					Card[1] = 'K'
 				cardface = str(Suit[Card[0]]) + str(Card[1])
 				# If statement to check for valid ace value
 				if Card[2] == 11:
@@ -204,6 +223,12 @@ for i in range(0,len(Players)):
 			time.sleep(1)
 			if hit == "H":
 				Card = draw_card()
+				if Card[1] == 11:
+					Card[1] = 'J'
+				elif Card[1] == 12:
+					Card[1] = 'Q'
+				elif Card[1] == 13:
+					Card[1] = 'K'
 				cardface = str(Suit[Card[0]]) + str(Card[1])
 				p.add_card(Card[2],cardface)
 				p.card_faces[1] = hidden
