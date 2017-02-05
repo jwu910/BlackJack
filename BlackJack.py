@@ -112,7 +112,7 @@ def print_current():
 	try:
 		os.system('clear')
 	#except:
-		os.system('cls')
+		#os.system('cls')
 	finally:
 		print "Current Players = "
 		for i in range(0,len(Players)):
@@ -145,18 +145,20 @@ for player in Players:
 			cardface = "***"
 			hidden = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-			if int(Card[1]) == 0:
-				p.has_ace = "True"
+			if int(Card[1]) == 1:
+				if p.has_ace == False:
+					p.has_ace = True
+					Card[2] = 11
+				elif p.has_ace == True and sum(p.hand) + 11 > 21:
+					Card[2] = 1
 		else:
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
-			
-			if int(Card[1]) == 0:
-				print "CARD[1] == 0 ---DEBUG"
-				time.sleep(10)
+			if int(Card[1]) == 1:
 				if p.has_ace == False:
 					p.has_ace = True
-				elif p.has_ace == True:
+					Card[2] = 11
+				elif p.has_ace == True and sum(p.hand) + 11 > 21:
 					Card[2] = 1
 
 			p.add_card(Card[2],cardface)
