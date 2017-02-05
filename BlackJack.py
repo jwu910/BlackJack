@@ -77,11 +77,11 @@ for i in range(len(Players)):
 Drawn = 0
 
 Suit = {1:'H',2:'D',3:'S',4:'C'} 
-DDeck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
+Deck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True]]
-Deck = [[True,True,True],
+DDeck = [[True,True,True],
 		[True,True,True],
 		[True,True,True],
 		[True,True,True]]
@@ -90,14 +90,14 @@ Deck = [[True,True,True],
 
 def draw_card(): # this function should draw card and return only card that was not previously drawn.
 	Card_Suit = r.randint(1,4) # Generate card suit
-	Card_Num = r.randint(1,3) # Generate card number
+	Card_Num = r.randint(1,13) # Generate card number
 	card_val = 0
 	while Deck[Card_Suit-1][Card_Num-1] == False:
 		Card_Suit = r.randint(1,4) # Generate card suit
-		Card_Num = r.randint(1,3) # Generate card number
+		Card_Num = r.randint(1,13) # Generate card number
 	if Deck[Card_Suit-1][Card_Num-1] == True:
 		Deck[Card_Suit-1][Card_Num-1] = False
-	if Card_Num == 1: # Need or statement options for ace == 1 or ace == 11.
+	if Card_Num == 1:
 		card_val = 11
 		p.has_ace = True
 	elif Card_Num > 1 and Card_Num < 10:
@@ -111,14 +111,12 @@ def draw_card(): # this function should draw card and return only card that was 
 def print_current():
 	try:
 		os.system('clear')
-	#except:
-		#os.system('cls')
 	finally:
 		print "Current Players = "
 		for i in range(0,len(Players)):
 			p = Players[i]
 			print p.name, "is", p.status
-			print p.card_faces, sum(p.hand)
+			print p.card_faces
 		print "---------------------------------------------"
 		print "Total Cards on Table = ", Drawn
 		print "---------------------------------------------"
@@ -145,7 +143,7 @@ for player in Players:
 			cardface = "***"
 			hidden = str(Suit[Card[0]]) + str(Card[1])
 			p.add_card(Card[2],cardface)
-			if int(Card[1]) == 1:
+			if int(Card[1]) == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
 				if p.has_ace == False:
 					p.has_ace = True
 					Card[2] = 11
@@ -154,23 +152,18 @@ for player in Players:
 		else:
 			Card = draw_card()
 			cardface = str(Suit[Card[0]]) + str(Card[1])
-			if int(Card[1]) == 1:
+			if int(Card[1]) == 1: # Check if Ace value of 11 busts player, if so, replace with 1.
 				if p.has_ace == False:
 					p.has_ace = True
 					Card[2] = 11
 				elif p.has_ace == True and sum(p.hand) + 11 > 21:
 					Card[2] = 1
-
 			p.add_card(Card[2],cardface)
 		Drawn += 1
 		
-print_current()		
-	
-#quit()
 # -----------------------------Deal---------------------------------------
 print_current()
-#
-#	print p.name, p.status
+
 for i in range(0,len(Players)):
 	p = Players[i]
 	if p.name != "Dealer": # Perform actions for players
@@ -188,8 +181,10 @@ for i in range(0,len(Players)):
 				else: # Check if player hand already has ace, if so, replace value of 11 with 1 if current card causes hand to exceed 21.
 					if p.has_ace == True:
 						if sum(p.hand) + Card[2] > 21:
-							p.hand[p.hand.index(11)] = 1 # This line should search for value 11 in p.hand and change to 1
-
+							try:
+								p.hand[p.hand.index(11)] = 1 # This line should search for value 11 in p.hand and change to 1
+							except:
+								pass
 				p.add_card(Card[2],cardface)
 				Drawn += 1
 				print_current()
@@ -236,7 +231,7 @@ results = []
 
 for i in Players[::]:
 	p = Players[index]
-	if sum(p.hand) < 22:
+	if sum(p.hand) <= 21:
 		results.append(sum(p.hand))
 	else:
 		results.append(0)
@@ -251,5 +246,3 @@ for i in Players[::]:
 	if len(set(results)) == 1:
 		print "Draw! Push!"
 	index += 1
-
-print Players[0].hand
