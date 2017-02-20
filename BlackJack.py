@@ -34,32 +34,32 @@ class Player(object):
 		self.has_ace = has_ace
 
 		
-Player_Num = 2
+# Player_Num = 2
 		
 # User input for number of players
-#try: # Need to learn how to add a loop on exception errors to request num 
-#	 # of players again instead of quit
-#	Player_Num = input("Number of Players = ") #Max 6 Players
-#except NameError:
-#	print "Invalid data type, must be number 1-6."
-#	quit()
-#except SyntaxError:
-#	print "Invalid data! Must enter number of players!"
-#	quit()
+try: # Need to learn how to add a loop on exception errors to request num 
+	 # of players again instead of quit
+	Player_Num = input("Number of Players = ") #Max 6 Players
+except NameError:
+	print "Invalid data type, must be number 1-6."
+	quit()
+except SyntaxError:
+	print "Invalid data! Must enter number of players!"
+	quit()
 
 # Check if number of players is valid	
-#if Player_Num < 1:
-#	print "Need at least 1 player!"
-#	quit()
-#elif Player_Num+1 > 7:
-#	print "Too many players! Max 6 players."
-#	quit()
+if Player_Num < 1:
+	print "Need at least 1 player!"
+	quit()
+elif Player_Num+1 > 7:
+	print "Too many players! Max 6 players."
+	quit()
 
 
-# Assign player names - create player objects
+# Assign player names - create player objects - finally assign Dealer
 Players = []
-#for i in range(0,Player_Num):
-Players.append(raw_input("Enter player name = "))
+for i in range(0,Player_Num):
+	Players.append(raw_input("Enter player name = "))
 Players.append("Dealer")
 	
 # Assign class name per player	
@@ -67,7 +67,7 @@ for i in range(0,len(Players)):
 	Players[i] = Player(Players[i])
 
 	
-for i in range(len(Players)):
+for i in range(0,len(Players)):
 	Players[i].status = "Playing"
 	Players[i].has_ace = "False"
 
@@ -76,7 +76,7 @@ for i in range(len(Players)):
 
 Drawn = 0
 
-Suit = {1:'H',2:'D',3:'S',4:'C'} 
+Suit = {1:'\\u2666',2:'\\u2665',3:'\\u2660',4:'\\u2663'} 
 Deck = [[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
 		[True,True,True,True,True,True,True,True,True,True,True,True,True],
@@ -122,6 +122,7 @@ def print_current():
 		print "Total Cards on Table = ", Drawn
 		print "---------------------------------------------"
 
+
 def hit_stand():
 	while True:
 		hit = raw_input("Hit or Stand? H/S = ")
@@ -131,6 +132,9 @@ def hit_stand():
 		else:
 			print "Invalid answer."
 	return hit.upper()
+
+
+
 		
 valid_answers = ['H','S']
 hit = ""
@@ -180,7 +184,7 @@ print_current()
 for i in range(0,len(Players)):
 	p = Players[i]
 	if p.name != "Dealer": # Perform actions for players
-		while sum(p.hand) <21:
+		while sum(p.hand) < 21:
 			hit = hit_stand()
 			if hit == "H":
 				Card = draw_card()
